@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.TableGenerator;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,11 +20,12 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@SequenceGenerator(name = "NEXTVAL", sequenceName = "DFSEQ_PCPROFISSIONAL.NEXTVAL", allocationSize = 1)
 public class pcprofissional {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long codprofissional;
-    private String Descricao;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NEXTVAL")
+    private Integer codprofissional;
+    private String descricao;
     private String senha;
     private String percomprof;
     private String tiposorteio;
@@ -44,6 +47,5 @@ public class pcprofissional {
     private String uf;
     private String celular;
     private String dtnasc;
-
 
 }

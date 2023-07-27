@@ -2,7 +2,6 @@ package com.br.SistemaDePontuacao.Model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -15,14 +14,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "pcclient")
-public class vendasProfissional {
+public class pcnfsaid {
     @Id
-    private Long numnota;
-    private Long vltotal;
-    private Long codcli;
-    private String cliente;
-    private String dtsaida;
-
-
+    private Long codprofissional;
+    private Long pontuacao;
 }

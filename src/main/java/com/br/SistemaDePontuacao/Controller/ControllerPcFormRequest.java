@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ControllerPcFormRequest {
-    private Long codprofissional;
+    private Integer codprofissional;
     private String Descricao;
     private String senha;
     private String percomprof;
