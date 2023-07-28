@@ -27,6 +27,8 @@ public class pcprofissional {
     private Integer codprofissional;
     private String descricao;
     private String senha;
+        private Integer pontuacao;
+
     private String percomprof;
     private String tiposorteio;
     private String tipoprof;

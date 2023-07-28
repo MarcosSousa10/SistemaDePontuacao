@@ -14,9 +14,11 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotBlank;
 
 public interface Repositorypcprofissional extends JpaRepository<pcprofissional,Integer>{
-    @Query(value = "select a.senha,email,percomprof,uf,dtnasc,tiposorteio,rg_ie,tipoprof,codfunccad,fone,profissao,a.codprofissional,a.bairro,a.celular,a.cep,a.cidade,a.descricao,a.dtcadastro,a.endereco,a.cnpj from pcprofissional a where a.codprofissional=10509", nativeQuery = true)
-    Optional<pcprofissional> informaçoesProfissional();
+    @Query(value = "select a.senha,email,percomprof,uf,dtnasc,tiposorteio,rg_ie,tipoprof,codfunccad,fone,profissao,a.codprofissional,a.bairro,a.celular,a.cep,a.cidade,a.descricao,a.dtcadastro,a.endereco,a.cnpj from pcprofissional a where a.codprofissional=?1", nativeQuery = true)
+    Optional<pcprofissional> informaçoesProfissional(String cod);
     
+@Query(value = "select a.senha,email,percomprof,uf,dtnasc,tiposorteio,rg_ie,tipoprof,codfunccad,fone,profissao,a.codprofissional,a.bairro,a.celular,a.cep,a.cidade,a.descricao,a.dtcadastro,a.endereco,a.cnpj from pcprofissional a where cnpj = ?1 and senha=?2", nativeQuery = true)
+    Optional<pcprofissional> codprof(String cnpj,String senha);
     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "INSERT INTO pcprofissional (codprofissional," + 
@@ -24,16 +26,71 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional,I
             " tipoprof, codfunccad, fone, profissao," +
             " bairro, celular, cep, cidade, descricao, dtcadastro, endereco, cnpj" +
             ") VALUES (DFSEQ_PCPROFISSIONAL.NEXTVAL," + 
-            "    '123', 'marcos@example.com', '2', 'MG', TO_DATE('1990-01-01', 'YYYY-MM-DD')," + 
-            " 'C', '123456789', 'PC', '31433', '1234567890'," + 
-            " 'DESIGNER', 'Barrio', '1234567890', '12345-678', 'Santa Luzia'," + 
-            " 'MARCOS PEGO DE SOUSA', TO_DATE('2023-07-27', 'YYYY-MM-DD'), 'Direcci00F3n del profesional', '12.345.678/0001-90'" + 
+            "    ?1, ?2, '2', ?3, TO_DATE(?4, 'DD-MM-YYYY'),'C', ?5," + 
+            "  'PC', '31433', ?6,?7," + 
+            " ?8,?9, ?10, ?11," + 
+            " ?12, TO_DATE('28-07-2023', 'DD-MM-YYYY'), ?13, ?14" + 
             ")" + 
             "", nativeQuery = true)
-    void fetchData();
-    @Transactional
+    Object salvar(String senha,String email,String uf,String dtnasc,String rg_ie,String fone,String profissao,
+    String bairro,String celular,String cep,String cidade,String descricao,String endereco, String cnpj);
+     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query(value = "update pcprofissional set email = ?1,senha = ?2 , percomprof= '2' , uf=?3, dtnasc=TO_DATE(?4, 'YYYY-MM-DD'), tiposorteio='C', rg_ie=?5," +
-            " tipoprof='PC', codfunccad='31433', fone=?6, profissao=?7,bairro=?8,celular=?9,cep=?10,cidade=?11,descricao=?12,dtcadastro=TO_DATE(?13, 'YYYY-MM-DD'),endereco=?14,cnpj=?15 where codprofissional =16837", nativeQuery = true)
-    Object status(String email,String senha,String uf,String dtnasc,String rg_ie,String fone,String profissao,String Bairro,String celular,String cep,String cidade,String descricao,String dtcadastro,String endereco,String cnpj);
+    @Query(value = "update pcprofissional set email = ?1,senha=?2,celular=?3,"+
+    "descricao=?4,uf=?5,rg_ie=?6,fone=?7,profissao=?8,bairro=?9,cep=?10,cidade=?11,"+
+    "endereco=?12,cnpj=?13 where codprofissional =?15", nativeQuery = true)
+    Object status(String email,String senha,String celular,String descricao,String uf,String rg_ie,
+    String fone,String profissao,String bairro,String cep,String cidade,String endereco, String cnpj,String codprofissional);
+        @Query(value = "SELECT a.codprofissional, " + 
+                " SUM(a.vltotal) / 1000 AS PONTUACAO," + 
+                " p.descricao, " + 
+                " p.senha, " + 
+                " p.percomprof, " + 
+                " p.tiposorteio, " + 
+                " p.tipoprof, " + 
+                " p.dtcadastro, " + 
+                " p.codfunccad, " + 
+                " p.profissao, " + 
+                " p.cnpj, " + 
+                " p.rg_ie, " + 
+                " p.endereco, " + 
+                " p.bairro, " + 
+                " p.cep, " + 
+                " p.fone, " + 
+                " p.email, " + 
+                " p.cidade, " + 
+                " p.uf, " + 
+                " p.celular, " + 
+                " p.dtnasc " + 
+                "FROM PCNFSAID a " + 
+                "JOIN pcprofissional p ON a.codprofissional = p.codprofissional " + 
+                "WHERE DTSAIDA BETWEEN TO_DATE('17-01-2021', 'DD/MM/YYYY') AND TO_DATE('17-01-2022', 'DD/MM/YYYY') " + 
+                "GROUP BY a.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  order by PONTUACAO DESC", nativeQuery = true)
+    List<pcprofissional> SELECT();
+            @Query(value = "SELECT a.codprofissional, " + 
+                " SUM(a.vltotal) / 1000 AS PONTUACAO," + 
+                " p.descricao, " + 
+                " p.senha, " + 
+                " p.percomprof, " + 
+                " p.tiposorteio, " + 
+                " p.tipoprof, " + 
+                " p.dtcadastro, " + 
+                " p.codfunccad, " + 
+                " p.profissao, " + 
+                " p.cnpj, " + 
+                " p.rg_ie, " + 
+                " p.endereco, " + 
+                " p.bairro, " + 
+                " p.cep, " + 
+                " p.fone, " + 
+                " p.email, " + 
+                " p.cidade, " + 
+                " p.uf, " + 
+                " p.celular, " + 
+                " p.dtnasc " + 
+                "FROM PCNFSAID a " + 
+                "JOIN pcprofissional p ON a.codprofissional = p.codprofissional " + 
+                "WHERE p.cnpj=?1 " + 
+                "GROUP BY a.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  order by PONTUACAO DESC", nativeQuery = true)
+    List<pcprofissional> filtro(String cnpj);
 }

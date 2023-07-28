@@ -45,6 +45,18 @@ public class ControllerPc {
     @GetMapping("/tudoNovo")
     public List<pcprofissional> obterProdutosNovos() {
         return (List<pcprofissional>) profissional.findAll();
+    }  
+        @GetMapping("/tudo")
+    public List<pcprofissional> obterProdutosN() {
+        return (List<pcprofissional>) profissional.SELECT();
+    }  
+            @GetMapping("/filtro")
+    public List<pcprofissional> obterfiltro(@PathVariable String cnpj) {
+        return (List<pcprofissional>) profissional.filtro(cnpj);
+    }  
+      @GetMapping("/codprof/{cnpj}/{senha}")
+    public Optional<pcprofissional> codprof(@PathVariable String cnpj,@PathVariable String senha) {
+        return (Optional<pcprofissional>) profissional.codprof(cnpj,senha);
     }
 
     @GetMapping("/vendas/{profissional}/{dtinicio}/{dtfim}")
@@ -52,29 +64,44 @@ public class ControllerPc {
             @PathVariable String dtfim) {
         return (List<vendasProfissional>) vendas.select(profissional, dtinicio, dtfim);
     }
-
-    @GetMapping("/pontuacao")
-    public Optional<pcnfsaid> pontuacao() {
-        return (Optional<pcnfsaid>) pontuacao.pontuacao();
+    @GetMapping("/pontuacao/{cod}")
+    public Optional<pcnfsaid> pontuacao(@PathVariable String cod) {
+        pcnfsaid result = pontuacao.pontuacao(cod);
+        return Optional.ofNullable(result != null ? result : new pcnfsaid());
     }
 
-    @GetMapping("/informacao")
-    public Optional<pcprofissional> informaçoesprofissional() {
-        return (Optional<pcprofissional>) profissional.informaçoesProfissional();
+    @GetMapping("/informacao/{cod}")
+    public Optional<pcprofissional> informaçoesprofissional(@PathVariable String cod) {
+        return (Optional<pcprofissional>) profissional.informaçoesProfissional(cod);
     }
 
-    @GetMapping("/teste")
-    public void dataeselect() {
-        profissional.fetchData();
-        return;
+ @GetMapping("/Salvar/{senha}/{email}/{uf}/{dtnasc}/{rg_ie}/{fone}/{profissao}/{bairro}/{celular}/{cep}/{cidade}/{descricao}/"+
+    "{endereco}/{cnpj}")
+    public ResponseEntity<Object> Salvar(
+        @PathVariable String senha,@PathVariable String email,@PathVariable String uf,
+        @PathVariable String dtnasc,@PathVariable String rg_ie,@PathVariable String fone,
+        @PathVariable String profissao,@PathVariable String bairro,@PathVariable String celular,@PathVariable String cep,
+        @PathVariable String cidade,@PathVariable String descricao, @PathVariable String endereco,
+        @PathVariable String cnpj) {
+        Object a = profissional.salvar(senha,email,uf,dtnasc,rg_ie,fone,profissao,bairro,celular,cep,cidade,descricao,endereco,cnpj);
+        if (a == "0") {
+            return ResponseEntity.ok(a);
+        } else {
+            String errorMessage = "Produto Não Encontrado";
+            return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
+        }
     }
 
-    @PutMapping("/update/{email}/{senha}/{uf}/{dtnasc}/{rg_ie}/{fone}/{profissao}/{bairro}/{celular}/{cep}/{cidade}/{descricao}/{dtcadastro}/{endereco}/{cnpj}")
-    public ResponseEntity<Object> statusNovo(@PathVariable String email, @PathVariable String senha,
-            @PathVariable String uf, @PathVariable String dtnasc, @PathVariable String rg_ie,
-            @PathVariable String fone,@PathVariable String profissao, @PathVariable String bairro, @PathVariable String celular,
-            @PathVariable String cep,@PathVariable String cidade,@PathVariable String descricao,@PathVariable String dtcadastro,@PathVariable String endereco,@PathVariable String cnpj) {
-        Object a = profissional.status(email, senha, uf, dtnasc, rg_ie, fone,profissao, bairro, celular,cep, cidade, descricao, dtcadastro, endereco, cnpj);
+    @GetMapping("/update/{email}/{senha}/{celular}/{descricao}/{uf}/{rg_ie}/{fone}/{profissao}/"+
+    "{bairro}/{cep}/{cidade}/{endereco}/{cnpj}/{codprofissional}")
+    public ResponseEntity<Object> Editar(
+        @PathVariable String email,@PathVariable String senha,@PathVariable String celular,
+        @PathVariable String descricao,@PathVariable String uf,@PathVariable String rg_ie,
+        @PathVariable String fone,@PathVariable String profissao,@PathVariable String bairro,
+        @PathVariable String cep,@PathVariable String cidade, @PathVariable String endereco,
+        @PathVariable String cnpj,@PathVariable String codprofissional) {
+        Object a = profissional.status(email,senha,celular,descricao,uf,rg_ie,fone,
+        profissao,bairro,cep,cidade,endereco,cnpj,codprofissional);
         if (a == "0") {
             return ResponseEntity.ok(a);
         } else {
