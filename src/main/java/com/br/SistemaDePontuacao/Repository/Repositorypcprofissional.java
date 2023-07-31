@@ -17,7 +17,31 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional,I
     @Query(value = "select a.senha,email,percomprof,uf,dtnasc,tiposorteio,rg_ie,tipoprof,codfunccad,fone,profissao,a.codprofissional,a.bairro,a.celular,a.cep,a.cidade,a.descricao,a.dtcadastro,a.endereco,a.cnpj from pcprofissional a where a.codprofissional=?1", nativeQuery = true)
     Optional<pcprofissional> informaçoesProfissional(String cod);
     
-@Query(value = "select a.senha,email,percomprof,uf,dtnasc,tiposorteio,rg_ie,tipoprof,codfunccad,fone,profissao,a.codprofissional,a.bairro,a.celular,a.cep,a.cidade,a.descricao,a.dtcadastro,a.endereco,a.cnpj from pcprofissional a where cnpj = ?1 and senha=?2", nativeQuery = true)
+@Query(value = "SELECT a.codprofissional, " + 
+        " SUM(a.vltotal) / 1000 AS PONTUACAO," +
+        " p.descricao, " +
+        " p.senha, " +
+        " p.percomprof, " +
+        " p.tiposorteio, " +
+        " p.tipoprof, " +
+        " p.dtcadastro, " +
+        " p.codfunccad, " +
+        " p.profissao, " +
+        " p.cnpj, " +
+        " p.rg_ie, " +
+        " p.endereco, " +
+        " p.bairro, " +
+        " p.cep, " +
+        " p.fone, " +
+        " p.email, " +
+        " p.cidade, " +
+        " p.uf, " +
+        " p.celular, " +
+        " p.dtnasc " +
+        "FROM PCNFSAID a " +
+        "JOIN pcprofissional p ON a.codprofissional = p.codprofissional " +
+        "where p.cnpj = '?1' and p.senha='?2' " +
+        "GROUP BY a.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  order by PONTUACAO DESC", nativeQuery = true)
     Optional<pcprofissional> codprof(String cnpj,String senha);
     @Transactional
     @Modifying(clearAutomatically = true, flushAutomatically = true)
