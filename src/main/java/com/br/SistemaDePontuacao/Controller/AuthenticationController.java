@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.SistemaDePontuacao.Model.user.AuthenticationDTO;
-import com.br.SistemaDePontuacao.Model.user.LoginResponseDTO;
-import com.br.SistemaDePontuacao.Model.user.RegisterDTO;
-import com.br.SistemaDePontuacao.Model.user.User;
-import com.br.SistemaDePontuacao.Repository.UserRepository;
+import com.br.SistemaDePontuacao.Model.app.user.AuthenticationDTO;
+import com.br.SistemaDePontuacao.Model.app.user.LoginResponseDTO;
+import com.br.SistemaDePontuacao.Model.app.user.RegisterDTO;
+import com.br.SistemaDePontuacao.Model.app.user.User;
+import com.br.SistemaDePontuacao.Repository.app.UserRepository;
 import com.br.SistemaDePontuacao.security.TokenService;
 
 

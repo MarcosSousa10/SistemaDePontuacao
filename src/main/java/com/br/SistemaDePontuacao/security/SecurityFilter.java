@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.br.SistemaDePontuacao.Repository.UserRepository;
+import com.br.SistemaDePontuacao.Repository.app.UserRepository;
 
 import java.io.IOException;
 
