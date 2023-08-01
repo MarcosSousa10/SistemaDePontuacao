@@ -17,5 +17,5 @@ import lombok.Setter;
 public class pcnfsaid {
     @Id
     private Long codprofissional;
-    private Long pontuacao;
+    private Integer pontuacao;
 }

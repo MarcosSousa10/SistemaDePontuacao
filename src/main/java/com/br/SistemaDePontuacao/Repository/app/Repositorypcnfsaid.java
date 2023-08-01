@@ -11,9 +11,10 @@ import com.br.SistemaDePontuacao.Model.app.pcnfsaid;
 import com.br.SistemaDePontuacao.Model.app.vendasProfissional;
 
 public interface Repositorypcnfsaid extends JpaRepository<pcnfsaid, Long> {
-    @Query(value = "SELECT a.codprofissional, SUM(a.vltotal) / ?1 AS PONTUACAO " +
-            "FROM PCNFSAID a " +
-            "WHERE a.codprofissional=?2 and DTSAIDA BETWEEN TO_DATE(?3, 'DD/MM/YYYY') AND TO_DATE(?4, 'DD/MM/YYYY') " +
-            "GROUP BY a.codprofissional", nativeQuery = true)
-    pcnfsaid pontuacao(Long fatordivisao,String cod,String dtinicio,String dtfim );
+    @Query(value = "SELECT p.codprofissional, "+
+     " nvl((select SUM(vltotal) / ?1 AS codbrinde from pcnfsaid where codprofissional = p.codprofissional and dtsaida between TO_DATE(?2, 'DD/MM/YYYY') and TO_DATE(?3, 'DD/MM/YYYY')),0) as pontuacao " + 
+            "FROM pcprofissional p " +
+            "WHERE p.codprofissional=?4 " +
+            "GROUP BY p.codprofissional", nativeQuery = true)
+    pcnfsaid pontuacao(Long fatordivisao,String dtinicio,String dtfim,String cod );
 }

@@ -120,7 +120,7 @@ public class ControllerPc {
             String dtinicio = produto.getDtinicio();
             String dtfim = produto.getDtfim();
             System.out.println(dtfim + dtinicio + fatordivisao);
-            pcnfsaid result = pontuacao.pontuacao(fatordivisao, cod, dtinicio, dtfim);
+            pcnfsaid result = pontuacao.pontuacao(fatordivisao, dtinicio, dtfim,cod);
 
             return Optional.ofNullable(result != null ? result : new pcnfsaid());
         } else {
