@@ -101,7 +101,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional,I
             "    ?1, ?2, '2', ?3, TO_DATE(?4, 'DD-MM-YYYY'),'C', ?5," + 
             "  'PC', '31433', ?6,?7," + 
             " ?8,?9, ?10, ?11," + 
-            " ?12, TO_DATE('28-07-2023', 'DD-MM-YYYY'), ?13, ?14" + 
+            " ?12, TO_DATE(SYSDATE, 'DD-MM-YYYY'), ?13, ?14" + 
             ")" + 
             "", nativeQuery = true)
     Object salvar(String senha,String email,String uf,String dtnasc,String rg_ie,String fone,String profissao,
