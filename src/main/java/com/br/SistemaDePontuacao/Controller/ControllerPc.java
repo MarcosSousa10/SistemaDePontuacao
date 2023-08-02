@@ -99,7 +99,7 @@ public class ControllerPc {
             Long fatordivisao = produto.getFatordivisao();
             String dtinicio = produto.getDtinicio();
             String dtfim = produto.getDtfim();
-            return profissional.informacaofiltrocnpj(fatordivisao, cnpj,dtinicio,dtfim).orElse(new pcprofissional());
+            return profissional.informacaofiltrocnpj(fatordivisao,dtinicio,dtfim,cnpj).orElse(new pcprofissional());
         } else {
             return new pcprofissional();
         }
