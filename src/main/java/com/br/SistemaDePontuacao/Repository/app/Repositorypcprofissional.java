@@ -15,8 +15,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public interface Repositorypcprofissional extends JpaRepository<pcprofissional, Integer> {
     @Query(value = "SELECT p.codprofissional," +
-            " nvl((select SUM(vltotal) / ?1 AS codbrinde from pcnfsaid where codprofissional = p.codprofissional),0) as codbrinde,"
-            +
+            " nvl((select SUM(vltotal) / ?1 AS codbrinde from pcnfsaid where codprofissional = p.codprofissional),0) as codbrinde,"+
             " (select max(dtsaida) from pcnfsaid where codprofissional = ?2 ) as tipoprof," +
             " p.descricao, " +
             " p.percomprof, " +
@@ -42,8 +41,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
     Optional<pcprofissional> informaçoesProfissional(Long fator, String cod, String cods);
 
     @Query(value = "SELECT p.codprofissional, " +
-            "nvl((select SUM(vltotal) / ?1 AS codbrinde from pcnfsaid where codprofissional = p.codprofissional),0) as codbrinde,"
-            +
+            "nvl((select SUM(vltotal) / ?1 AS codbrinde from pcnfsaid where codprofissional = p.codprofissional),0) as codbrinde,"+
             "  p.descricao," +
             "  p.senha," +
             "  p.percomprof," +
