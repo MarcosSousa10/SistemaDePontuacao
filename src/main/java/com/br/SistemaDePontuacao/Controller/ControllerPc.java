@@ -2,6 +2,7 @@ package com.br.SistemaDePontuacao.Controller;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,7 +100,7 @@ public class ControllerPc {
             Long fatordivisao = produto.getFatordivisao();
             String dtinicio = produto.getDtinicio();
             String dtfim = produto.getDtfim();
-            return profissional.informacaofiltrocnpj(fatordivisao,dtinicio,dtfim,cnpj).orElse(new pcprofissional());
+            return profissional.informacaofiltrocnpj(fatordivisao, dtinicio, dtfim, cnpj).orElse(new pcprofissional());
         } else {
             return new pcprofissional();
         }
@@ -120,7 +121,7 @@ public class ControllerPc {
             String dtinicio = produto.getDtinicio();
             String dtfim = produto.getDtfim();
             System.out.println(dtfim + dtinicio + fatordivisao);
-            pcnfsaid result = pontuacao.pontuacao(fatordivisao, dtinicio, dtfim,cod);
+            pcnfsaid result = pontuacao.pontuacao(fatordivisao, dtinicio, dtfim, cod);
 
             return Optional.ofNullable(result != null ? result : new pcnfsaid());
         } else {
@@ -134,7 +135,7 @@ public class ControllerPc {
         if (fatordivisaos.isPresent()) {
             Produto produto = fatordivisaos.get();
             Long fatordivisao = produto.getFatordivisao();
-            return (Optional<pcprofissional>) profissional.informaçoesProfissional(fatordivisao, cod,cod);
+            return (Optional<pcprofissional>) profissional.informaçoesProfissional(fatordivisao, cod, cod);
         } else {
             return null;
         }
@@ -159,19 +160,19 @@ public class ControllerPc {
             return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
         }
     }
+
     @PutMapping("/teste/{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody ControllerPcFormRequest produto){
-        Optional<pcprofissional> produtoExistente=profissional.findById(id);
-        if(produtoExistente.isEmpty()){
-       //public void =>     throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-         return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody ControllerPcFormRequest produto) {
+        Optional<pcprofissional> produtoExistente = profissional.findById(id);
+        if (produtoExistente.isEmpty()) {
+            // public void => throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        pcprofissional entidade=produto.toModel();
+        pcprofissional entidade = produto.toModel();
         entidade.setCodprofissional(id);
         profissional.save(entidade);
         return ResponseEntity.ok().build();
     }
-
 
     @GetMapping("/update/{email}/{senha}/{celular}/{descricao}/{uf}/{rg_ie}/{fone}/{profissao}/" +
             "{bairro}/{cep}/{cidade}/{endereco}/{cnpj}/{codprofissional}")
@@ -227,6 +228,34 @@ public class ControllerPc {
         parametros.save(entidade);
 
         return ParametrosRequest.fromModel(entidade);
+    }
+
+    @GetMapping("/dashboard/{cnpj}/{mes}")
+    public pcprofissional dashboard(@PathVariable String cnpj, @PathVariable String mes) {
+        Optional<Produto> fatordivisaos = parametros.select();
+        if (fatordivisaos.isPresent()) {
+            Produto produto = fatordivisaos.get();
+            Long fatordivisao = produto.getFatordivisao();
+            String dtinicio = produto.getDtinicio();
+            String dtfim = produto.getDtfim();
+            return profissional.dashboard(fatordivisao, mes, dtinicio, dtfim, cnpj).orElse(new pcprofissional());
+        } else {
+            return new pcprofissional();
+        }
+    }
+
+    @GetMapping("/dashboardcoluna")
+    public List<pcprofissional> dashboardcoluna() {
+        Optional<Produto> fatordivisaos = parametros.select();
+        if (fatordivisaos.isPresent()) {
+            Produto produto = fatordivisaos.get();
+            Long fatordivisao = produto.getFatordivisao();
+            String dtinicio = produto.getDtinicio();
+            String dtfim = produto.getDtfim();
+            return profissional.dashboardcoluna(fatordivisao, dtinicio, dtfim);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 }

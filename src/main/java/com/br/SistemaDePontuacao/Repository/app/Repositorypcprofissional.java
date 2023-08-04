@@ -3,6 +3,7 @@ package com.br.SistemaDePontuacao.Repository.app;
 import java.util.List;
 import java.util.Optional;
 
+import org.antlr.v4.runtime.atn.SemanticContext.AND;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -170,5 +171,64 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
             "WHERE p.cnpj=?2 " +
             "GROUP BY a.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  order by codbrinde DESC", nativeQuery = true)
     List<pcprofissional> filtro(Long fatordivisao, String cnpj);
+  @Query(value = "SELECT p.codprofissional, "+
+  "nvl((select SUM(vltotal) / ?1 AS codbrinde from pcnfsaid where codprofissional = p.codprofissional and  "+
+  "extract (MONTH from dtsaida)=?2 and DTSAIDA BETWEEN TO_DATE(?3, 'DD/MM/YYYY') AND TO_DATE(?4, 'DD/MM/YYYY')),0) as codbrinde, "+
+              " p.descricao, " +
+            " p.senha, " +
+            " p.percomprof, " +
+            " p.tiposorteio, " +
+            " p.tipoprof, " +
+            " p.dtcadastro, " +
+            " p.codfunccad, " +
+            " p.profissao, " +
+            " p.cnpj, " +
+            " p.rg_ie, " +
+            " p.endereco, " +
+            " p.bairro, " +
+            " p.cep, " +
+            " p.fone, " +
+            " p.email, " +
+            " p.cidade, " +
+            " p.uf, " +
+            " p.celular, " +
+             "TO_CHAR(p.dtnasc , 'DD/MM/YYYY') as dtnasc "+
+             "FROM pcprofissional p "+
+             "where  p.cnpj = ?5 "+
+             "GROUP BY p.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc order by codbrinde DESC", nativeQuery = true)
+    Optional<pcprofissional> dashboard(Long fatordivisao,String mes, String dtinico, String dtfim, String cnpj );
 
+  @Query(value = "SELECT "+
+  "p.codprofissional, "+
+  "NVL( "+
+    "(SELECT SUM(vltotal) / ?1 AS codbrinde "+
+     "FROM pcnfsaid "+
+     "WHERE codprofissional = p.codprofissional "+
+       "AND dtsaida BETWEEN TO_DATE(?2, 'DD-MM-YYYY') AND TO_DATE(?3, 'DD-MM-YYYY') "+
+    "), 0 "+
+  ") AS codbrinde, "+
+   " p.descricao, " +
+            " p.senha, " +
+            " p.percomprof, " +
+            " p.tiposorteio, " +
+            " p.tipoprof, " +
+            " p.dtcadastro, " +
+            " p.codfunccad, " +
+            " p.profissao, " +
+            " p.cnpj, " +
+            " p.rg_ie, " +
+            " p.endereco, " +
+            " p.bairro, " +
+            " p.cep, " +
+            " p.fone, " +
+            " p.email, " +
+            " p.cidade, " +
+            " p.uf, " +
+            " p.celular, " +
+             "TO_CHAR(p.dtnasc , 'DD/MM/YYYY') as dtnasc "+
+"FROM pcprofissional p "+
+"GROUP BY p.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc "+
+"ORDER BY codbrinde DESC "+
+"FETCH FIRST 10 ROWS ONLY", nativeQuery = true)
+    List<pcprofissional> dashboardcoluna(Long fatordivisao, String dtinico, String dtfim);
 }
