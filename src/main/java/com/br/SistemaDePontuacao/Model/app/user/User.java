@@ -1,4 +1,5 @@
 package com.br.SistemaDePontuacao.Model.app.user;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -27,7 +28,7 @@ public class User implements UserDetails {
     @Id
     @Column(name = "codprofissional")
     private String id;
-        @Column(name = "cnpj")
+    @Column(name = "cnpj")
 
     private String login;
     @Column(name = "senha")
@@ -35,7 +36,7 @@ public class User implements UserDetails {
     @Column(name = "codbrinde")
     private UserRole role;
 
-    public User(String login, String password, UserRole role){
+    public User(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;
@@ -43,10 +44,10 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(this.role );
-        System.out.println(UserRole.ADMIN);
-        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -92,8 +93,8 @@ public class User implements UserDetails {
 
     public String getPassword() {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-      return  this.password = passwordEncoder.encode(password);
-        
+        return this.password = passwordEncoder.encode(password);
+
     }
 
     public void setPassword(String password) {
@@ -107,6 +108,5 @@ public class User implements UserDetails {
     public void setRole(UserRole role) {
         this.role = role;
     }
-    
-    
+
 }
