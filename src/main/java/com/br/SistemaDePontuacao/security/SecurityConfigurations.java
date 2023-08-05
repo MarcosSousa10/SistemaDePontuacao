@@ -37,6 +37,9 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.PUT,
                                 "/pc/teste/{id}")
                         .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                "/images/{id}")
+                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/pc/updatedtinicio/{dtinicio}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pc/update/{dtfim}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/pc/select").hasRole("ADMIN")
