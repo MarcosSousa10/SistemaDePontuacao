@@ -231,4 +231,29 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
 "ORDER BY codbrinde DESC "+
 "FETCH FIRST 10 ROWS ONLY", nativeQuery = true)
     List<pcprofissional> dashboardcoluna(Long fatordivisao, String dtinico, String dtfim);
+      @Query(value = "SELECT " +
+                      " p.codprofissional,p.codbrinde, " +
+                      " p.descricao, " +
+                       "p.senha, " +
+                       "p.percomprof, " +
+                       "p.tiposorteio, " +
+                       "p.tipoprof, " +
+                       "p.dtcadastro, " +
+                       "p.codfunccad, " +
+                       "p.profissao, " +
+                       "p.cnpj, " +
+                       "p.rg_ie, " +
+                       "p.endereco, " +
+                       "p.bairro, " +
+                       "p.cep, " +
+                       "p.fone, " +
+                       "p.email, " +
+                       "p.cidade, " +
+                       "p.uf, " +
+                       "p.celular, " +
+                       "p.dtnasc " +
+                      "FROM pcprofissional p where  email=?1 " +
+                      "GROUP BY p.codprofissional, p.descricao,p.codbrinde, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, " +
+                      " p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc ", nativeQuery = true)
+    Optional<pcprofissional> troca(String email );
 }

@@ -244,6 +244,11 @@ public class ControllerPc {
         }
     }
 
+    @GetMapping("/senha/{email}")
+    public pcprofissional troca(@PathVariable String email) {
+        return profissional.troca(email).orElse(new pcprofissional());
+    }
+
     @GetMapping("/dashboardcoluna")
     public List<pcprofissional> dashboardcoluna() {
         Optional<Produto> fatordivisaos = parametros.select();

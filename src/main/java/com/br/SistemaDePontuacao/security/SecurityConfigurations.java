@@ -19,47 +19,58 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
-    @Autowired
-    SecurityFilter securityFilter;
+        @Autowired
+        SecurityFilter securityFilter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf().and().cors().and().csrf().disable()
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET,
-                                "/pc/Salvar/{email}/{senha}/{celular}/{descricao}/{uf}/{dtnasc}/{rg_ie}/{fone}/{profissao}/"
-                                        +
-                                        "{bairro}/{cep}/{cidade}/{endereco}/{cnpj}")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.PUT,
-                                "/pc/teste/{id}")
-                        .permitAll()
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+                return httpSecurity
+                                .csrf().and().cors().and().csrf().disable()
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authorizeHttpRequests(authorize -> authorize
+                                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                                 .requestMatchers(HttpMethod.GET,
-                                "/images/{id}")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/pc/updatedtinicio/{dtinicio}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/pc/update/{dtfim}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/pc/select").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/pc/set").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/pc/informacaofitrocnpj/{cnpj}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/pc/updatefatordivisao/{fatordivisao}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/pc/tudo").hasRole("ADMIN")
+                                                                "/pc/Salvar/{email}/{senha}/{celular}/{descricao}/{uf}/{dtnasc}/{rg_ie}/{fone}/{profissao}/"
+                                                                                +
+                                                                                "{bairro}/{cep}/{cidade}/{endereco}/{cnpj}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.PUT,
+                                                                "/pc/teste/{id}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/images/{id}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/pc/senha/{email}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.POST,
+                                                                "/email")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/pc/updatedtinicio/{dtinicio}")
+                                                .hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.GET, "/pc/update/{dtfim}").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.GET, "/pc/select").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.POST, "/pc/set").hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.GET, "/pc/informacaofitrocnpj/{cnpj}")
+                                                .hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/pc/updatefatordivisao/{fatordivisao}")
+                                                .hasRole("ADMIN")
+                                                .requestMatchers(HttpMethod.GET, "/pc/tudo").hasRole("ADMIN")
                                                 .anyRequest().authenticated())
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+                                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                                .build();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+                        throws Exception {
+                return authenticationConfiguration.getAuthenticationManager();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }
