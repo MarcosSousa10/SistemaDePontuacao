@@ -42,6 +42,15 @@ public class SecurityConfigurations {
                                                                 "/images/{id}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
+                                                                "/images1/{id}")
+                                                .permitAll()
+                                                       .requestMatchers(HttpMethod.GET,
+                                                                "/images2/{id}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
+                                                                "/images3/{id}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
                                                                 "/pc/senha/{email}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.POST,
