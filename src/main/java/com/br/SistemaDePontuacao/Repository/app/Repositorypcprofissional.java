@@ -126,33 +126,32 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
   String fone, String profissao, String bairro, String cep, String cidade, String endereco, String cnpj,
   String codprofissional);
 
-    @Query(value = " SELECT P.codprofissional, "+ 
-"NVL(SUM((a.PUNIT * A.QT) / ?1 ),0) AS codbrinde, "+
-"p.descricao,  "+
-"p.senha,  "+
-"p.percomprof, "+  
-"p.tiposorteio,  "+
-"p.tipoprof,  "+
-"p.dtcadastro,  "+
-"p.codfunccad,  "+
-"p.profissao,  "+
-"p.cnpj,  "+
-"p.rg_ie,  "+
-"p.endereco, "+ 
-"p.bairro,  "+
-"p.cep,  "+
-"p.fone,  "+
-"p.email,  "+
-"p.cidade,  "+
-"p.uf,  "+
-"p.celular, "+ 
-"p.dtnasc  "+
-  "FROM PCMOV a , "+
-  "PCNFSAID D, PCPROFISSIONAL P "+
-  "WHERE A.DTMOV BETWEEN TO_DATE(?2, 'DD/MM/YYYY') AND TO_DATE(?3, 'DD/MM/YYYY')  AND A.CODPROD NOT IN (SELECT CODPROD FROM PCPRODUT WHERE CODSEC IN (587)) AND "+
-  "P.CODPROFISSIONAL = D.CODPROFISSIONAL AND D.NUMTRANSVENDA = A.NUMTRANSVENDA AND A.CODOPER = 'S' AND A.CODFILIAL = D.CODFILIAL AND D.DTCANCEL IS NULL  AND D.CODPROFISSIONAL IS NOT NULL AND "+
- "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') AND P.SITUACAO = 'A' " +
- "GROUP BY P.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  order by codbrinde DESC", nativeQuery = true)
+    @Query(value = " SELECT P.codprofissional,  " +
+                  "(select NVL(SUM((a.PUNIT * A.QT) / ?1),0) from pcmov a, pcnfsaid s WHERE A.DTMOV BETWEEN TO_DATE(?2, 'DD/MM/YYYY') AND TO_DATE(?3, 'DD/MM/YYYY')  AND A.CODPROD NOT IN (SELECT CODPROD FROM PCPRODUT WHERE CODSEC IN (587)) AND " +
+                  "s.codprofissional = p.codprofissional AND s.NUMTRANSVENDA = A.NUMTRANSVENDA AND A.CODOPER = 'S' AND A.CODFILIAL = s.CODFILIAL AND a.DTCANCEL IS NULL FETCH FIRST 10 ROWS ONLY  ) AS codbrinde, " +
+                  "p.descricao, " +
+                  "p.senha,  " +
+                  "p.percomprof,  " +
+                  "p.tiposorteio, " +
+                  "p.tipoprof,  " +
+                  "p.dtcadastro,  " +
+                  "p.codfunccad,  " +
+                  "p.profissao, " +
+                  "p.cnpj,  " +
+                  "p.rg_ie,  " +
+                  "p.endereco, " +
+                  "p.bairro, " +
+                  "p.cep,  " +
+                  "p.fone,  " +
+                  "p.email, " +
+                  "p.cidade, " +
+                  "p.uf,  " +
+                  "p.celular,  " +
+                  "p.dtnasc  " +
+                  "FROM PCPROFISSIONAL P " +
+                  "where " +
+                  "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') " +
+                  "AND P.SITUACAO = 'A' ORDER BY codbrinde DESC", nativeQuery = true)
     List<pcprofissional> SELECT(Long fatordivisao, String dtinico, String dtfim);
 
     @Query(value = " SELECT P.codprofissional,  "+
@@ -211,33 +210,34 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
     "AND P.SITUACAO = 'A'", nativeQuery = true)
     Optional<pcprofissional> dashboard(Long fatordivisao,String mes, String dtinico, String dtfim, String cnpj );
 
-  @Query(value = "SELECT P.codprofissional,  " +
-                  "(select NVL(SUM((a.PUNIT * A.QT) / ?1),0) from pcmov a, pcnfsaid s WHERE A.DTMOV BETWEEN TO_DATE(?2, 'DD/MM/YYYY') AND TO_DATE(?3, 'DD/MM/YYYY')  AND A.CODPROD NOT IN (SELECT CODPROD FROM PCPRODUT WHERE CODSEC IN (587)) AND " +
-                  "s.codprofissional = p.codprofissional AND s.NUMTRANSVENDA = A.NUMTRANSVENDA AND A.CODOPER = 'S' AND A.CODFILIAL = s.CODFILIAL AND a.DTCANCEL IS NULL FETCH FIRST 10 ROWS ONLY  ) AS codbrinde, " +
-                  "p.descricao, " +
-                  "p.senha,  " +
-                  "p.percomprof,  " +
-                  "p.tiposorteio, " +
-                  "p.tipoprof,  " +
-                  "p.dtcadastro,  " +
-                  "p.codfunccad,  " +
-                  "p.profissao, " +
-                  "p.cnpj,  " +
-                  "p.rg_ie,  " +
-                  "p.endereco, " +
-                  "p.bairro, " +
-                  "p.cep,  " +
-                  "p.fone,  " +
-                  "p.email, " +
-                  "p.cidade, " +
-                  "p.uf,  " +
-                  "p.celular,  " +
-                  "p.dtnasc  " +
-                  "FROM PCPROFISSIONAL P " +
-                  "where " +
-                  "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') " +
-                  "AND P.SITUACAO = 'A' ORDER BY codbrinde DESC "+
-                  "FETCH FIRST 10 ROWS ONLY", nativeQuery = true)
+  @Query(value = "SELECT P.codprofissional, "+ 
+"NVL(SUM((a.PUNIT * A.QT) / ?1 ),0) AS codbrinde, "+
+"p.descricao,  "+
+"p.senha,  "+
+"p.percomprof, "+  
+"p.tiposorteio,  "+
+"p.tipoprof,  "+
+"p.dtcadastro,  "+
+"p.codfunccad,  "+
+"p.profissao,  "+
+"p.cnpj,  "+
+"p.rg_ie,  "+
+"p.endereco, "+ 
+"p.bairro,  "+
+"p.cep,  "+
+"p.fone,  "+
+"p.email,  "+
+"p.cidade,  "+
+"p.uf,  "+
+"p.celular, "+ 
+"p.dtnasc  "+
+  "FROM PCMOV a , "+
+  "PCNFSAID D, PCPROFISSIONAL P "+
+  "WHERE A.DTMOV BETWEEN TO_DATE(?2, 'DD/MM/YYYY') AND TO_DATE(?3, 'DD/MM/YYYY')  AND A.CODPROD NOT IN (SELECT CODPROD FROM PCPRODUT WHERE CODSEC IN (587)) AND "+
+  "P.CODPROFISSIONAL = D.CODPROFISSIONAL AND D.NUMTRANSVENDA = A.NUMTRANSVENDA AND A.CODOPER = 'S' AND A.CODFILIAL = D.CODFILIAL AND D.DTCANCEL IS NULL  AND D.CODPROFISSIONAL IS NOT NULL AND "+
+ "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') AND P.SITUACAO = 'A' " +
+ "GROUP BY P.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  order by codbrinde DESC"+
+                  " FETCH FIRST 10 ROWS ONLY", nativeQuery = true)
     List<pcprofissional> dashboardcoluna(Long fatordivisao, String dtinico, String dtfim);
       @Query(value = "SELECT " +
        " p.codprofissional,p.codbrinde, " +
