@@ -51,6 +51,9 @@ public class SecurityConfigurations {
                                                                 "/images3/{id}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
+                                                                "/imagemCarrossel/{id}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
                                                                 "/pc/senha/{email}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.POST,
