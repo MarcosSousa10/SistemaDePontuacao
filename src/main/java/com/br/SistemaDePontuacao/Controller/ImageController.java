@@ -24,7 +24,6 @@ import com.br.SistemaDePontuacao.services.ImageService;
 
     @RestController
     @CrossOrigin("*")
-
 public class ImageController {
     private final ImageService imageService;
 
@@ -38,7 +37,7 @@ public class ImageController {
 
         for (Image image : images) {
             // Assuming you have a base URL where the images are served from
-            String imageUrl = "http://192.168.2.181:5555/images/" + image.getId();
+            String imageUrl = "https://othondecarvalho.com.br:5555/images/" + image.getId();
             imageUrls.add(imageUrl);
         }
 

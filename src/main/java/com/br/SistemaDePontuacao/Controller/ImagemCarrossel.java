@@ -36,7 +36,7 @@ public class ImagemCarrossel {
         List<String> imageUrls = new ArrayList<>();
         for (ImagemC image : images) {
             // Assuming you have a base URL where the images are served from
-            String imageUrl = "http://192.168.2.181:5555/imagemCarrossel/" + image.getId();
+            String imageUrl = "https://othondecarvalho.com.br:5555/imagemCarrossel/" + image.getId();
             imageUrls.add(imageUrl);
         }
 
