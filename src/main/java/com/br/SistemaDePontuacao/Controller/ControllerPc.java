@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.br.SistemaDePontuacao.Model.app.pcnfsaid;
 import com.br.SistemaDePontuacao.Model.app.pcprofissional;
+import com.br.SistemaDePontuacao.Model.app.pcprofissionals;
 import com.br.SistemaDePontuacao.Model.app.vendasProfissional;
 import com.br.SistemaDePontuacao.Model.auth.Produto;
 import com.br.SistemaDePontuacao.Model.auth.video;
 import com.br.SistemaDePontuacao.Repository.app.RepositoryVendasProfissional;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcnfsaid;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcprofissional;
+import com.br.SistemaDePontuacao.Repository.app.Repositorypcprofissionals;
 import com.br.SistemaDePontuacao.Repository.auth.Repositoryoo;
 import com.br.SistemaDePontuacao.Repository.auth.videoRepository;
 
@@ -36,6 +38,8 @@ import com.br.SistemaDePontuacao.Repository.auth.videoRepository;
 public class ControllerPc {
     @Autowired
     private Repositorypcprofissional profissional;
+    @Autowired
+    private Repositorypcprofissionals profissionals;
     @Autowired
     private RepositoryVendasProfissional vendas;
     @Autowired
@@ -165,15 +169,15 @@ private videoRepository vRepository;
     }
 
     @PutMapping("/teste/{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody ControllerPcFormRequest produto) {
-        Optional<pcprofissional> produtoExistente = profissional.findById(id);
+    public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody ControllerPcFormRequests produto) {
+        Optional<pcprofissionals> produtoExistente = profissionals.findById(id);
         if (produtoExistente.isEmpty()) {
             // public void => throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             return ResponseEntity.notFound().build();
         }
-        pcprofissional entidade = produto.toModel();
+        pcprofissionals entidade = produto.toModel();
         entidade.setCodprofissional(id);
-        profissional.save(entidade);
+        profissionals.save(entidade);
         return ResponseEntity.ok().build();
     }
 
