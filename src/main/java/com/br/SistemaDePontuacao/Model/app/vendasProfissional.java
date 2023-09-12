@@ -23,6 +23,7 @@ public class vendasProfissional {
     private Long codcli;
     private String cliente;
     private String dtsaida;
+    private String vendedor;
 
 
 }

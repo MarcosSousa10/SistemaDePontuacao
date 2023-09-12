@@ -106,12 +106,12 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
     @Query(value = "INSERT INTO pcprofissional (codprofissional," +
   " senha, email, percomprof, uf, dtnasc, tiposorteio, rg_ie," +
   " tipoprof, codfunccad, fone, profissao," +
-  " bairro, celular, cep, cidade, descricao, dtcadastro, endereco, cnpj" +
+  " bairro, celular, cep, cidade, descricao, dtcadastro, endereco, cnpj, situacao" +
   ") VALUES (DFSEQ_PCPROFISSIONAL.NEXTVAL," +
   "    ?1, ?2, '2', ?3, TO_DATE(?4, 'DD-MM-YYYY'),'C', ?5," +
   "  'PC', '31433', ?6,?7," +
   " ?8,?9, ?10, ?11," +
-  " ?12, TO_DATE(SYSDATE, 'DD-MM-YYYY'), ?13, ?14" +
+  " ?12, TO_DATE(SYSDATE, 'DD-MM-YYYY'), ?13, ?14, 'A'" +
   ")" +
   "", nativeQuery = true)
     Object salvar(String senha, String email, String uf, String dtnasc, String rg_ie, String fone, String profissao,

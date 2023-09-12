@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,11 +26,13 @@ import com.br.SistemaDePontuacao.Model.app.pcprofissional;
 import com.br.SistemaDePontuacao.Model.app.pcprofissionals;
 import com.br.SistemaDePontuacao.Model.app.vendasProfissional;
 import com.br.SistemaDePontuacao.Model.auth.Produto;
+import com.br.SistemaDePontuacao.Model.auth.campanha;
 import com.br.SistemaDePontuacao.Model.auth.video;
 import com.br.SistemaDePontuacao.Repository.app.RepositoryVendasProfissional;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcnfsaid;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcprofissional;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcprofissionals;
+import com.br.SistemaDePontuacao.Repository.auth.RepositoryCampanha;
 import com.br.SistemaDePontuacao.Repository.auth.Repositoryoo;
 import com.br.SistemaDePontuacao.Repository.auth.videoRepository;
 
@@ -46,8 +50,55 @@ public class ControllerPc {
     private Repositorypcnfsaid pontuacao;
     @Autowired
     private Repositoryoo parametros;
-@Autowired
-private videoRepository vRepository;
+    @Autowired
+    private videoRepository vRepository;
+    @Autowired
+    private RepositoryCampanha campanha;
+
+    // @GetMapping("/Campanha")
+    // public List<campanha> CampanhaSelect() {
+    //     return (List<campanha>) campanha.findAll();
+    // }
+
+    @PostMapping("/SalvarCampanha")
+    public ControllerCampanha salvarCampanha(@RequestBody ControllerCampanha loginss) {
+        campanha entidade = loginss.toModel();
+        campanha.save(entidade);
+        return ControllerCampanha.fromModel(entidade);
+    }
+    @PutMapping("/EditarCampanha/{id}")
+    public ControllerCampanha editarCampanha(@PathVariable Long id, @RequestBody ControllerCampanha campanhaAtualizada) {
+        // Primeiro, verifique se a campanha com o ID fornecido existe no banco de dados
+        Optional<campanha> campanhaExistente = campanha.findById(id);
+        
+        if (campanhaExistente.isPresent()) {
+            // Atualize os dados da campanha existente com os dados da campanha atualizada
+            campanha entidadeExistente = campanhaExistente.get();
+            entidadeExistente.setNome(campanhaAtualizada.getNome());
+            entidadeExistente.setPeriodo(campanhaAtualizada.getPeriodo());
+            // Atualize os outros atributos conforme necessário
+            
+            // Salve a campanha atualizada de volta no banco de dados
+            campanha.save(entidadeExistente);
+            
+            return ControllerCampanha.fromModel(entidadeExistente);
+        } else {
+            // Caso a campanha com o ID fornecido não exista, você pode lidar com isso adequadamente
+            throw null;
+        }
+    }
+
+    @GetMapping("/Campanha")
+    public ResponseEntity<campanha> CampanhaSelects() {
+        Optional<campanha> campanhaOptional = campanha.findById(1L); // Supondo que o ID é do tipo Long
+        
+        if (campanhaOptional.isPresent()) {
+            return ResponseEntity.ok(campanhaOptional.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
     @PostMapping("/usuario")
     public ControllerPcFormRequest salvarr(@RequestBody ControllerPcFormRequest loginss) {
         pcprofissional entidade = loginss.toModel();
@@ -235,6 +286,7 @@ private videoRepository vRepository;
         parametros.save(entidade);
         return ParametrosRequest.fromModel(entidade);
     }
+
     @PostMapping("/video")
     public videoRequest vedeo(@RequestBody videoRequest video) {
         com.br.SistemaDePontuacao.Model.auth.video entidade = video.toModel();
@@ -242,10 +294,12 @@ private videoRepository vRepository;
         vRepository.save(entidade);
         return videoRequest.fromModel(entidade);
     }
-        @GetMapping("/tudoVideo")
+
+    @GetMapping("/tudoVideo")
     public List<video> tudoVideo() {
         return (List<video>) vRepository.findAll();
     }
+
     @GetMapping("/dashboard/{cnpj}/{mes}")
     public pcprofissional dashboard(@PathVariable String cnpj, @PathVariable String mes) {
         Optional<Produto> fatordivisaos = parametros.select();

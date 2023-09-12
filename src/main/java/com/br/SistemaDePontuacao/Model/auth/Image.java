@@ -20,7 +20,6 @@ public class Image {
     @Lob
     @Column(length=512)
     private byte[] data;
-
     public Long getId() {
         return id;
     }
