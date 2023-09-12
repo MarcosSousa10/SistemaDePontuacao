@@ -40,7 +40,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
   " p.dtnasc " +
   "FROM pcprofissional p  " +
   "where p.codprofissional=?3 and" +
-  "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') "+
+  "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') "+
                   " AND P.SITUACAO = 'A'  order by codbrinde DESC ", nativeQuery = true)
     Optional<pcprofissional> informaçoesProfissional(Long fator, String cod, String cods);
 
@@ -69,10 +69,34 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
      "  FROM PCPROFISSIONAL P "+
      "  where "+
      "  p.cnpj =?2 and "+
-     "  (UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') "+
+     "  (UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') "+
      "  AND P.SITUACAO = 'A'", nativeQuery = true)
     Optional<pcprofissional> codprof(Long fatordivisao, String cnpj);
 
+        @Query(value = " SELECT "+
+        " codprofissional, "+
+        "   descricao, "+
+        " senha, "+
+        " codbrinde,"+
+       " percomprof,"+
+        " tiposorteio,"+
+       " tipoprof,"+
+        " dtcadastro,"+
+        " codfunccad,"+
+        " profissao,"+
+        " cnpj,"+
+        " rg_ie,"+
+        " endereco,"+
+        " bairro,"+
+       " cep,"+
+        " fone,"+
+       " email,"+
+        " cidade,"+
+        " uf,"+    
+       " celular,"+
+        " dtnasc"+
+       " FROM PCPROFISSIONAL WHERE CNPJ=?1", nativeQuery = true)
+    Optional<pcprofissional> validarcnpj(String cnpj);
     @Query(value = " SELECT P.codprofissional,  "+
      "(select NVL(SUM((a.PUNIT * A.QT) / ?1),0) from pcmov a, pcnfsaid s WHERE   A.DTMOV BETWEEN TO_DATE(?2, 'DD/MM/YYYY') AND TO_DATE(?3, 'DD/MM/YYYY')  AND A.CODPROD NOT IN (SELECT CODPROD FROM PCPRODUT WHERE CODSEC IN (587)) AND " +
      " s.codprofissional = p.codprofissional AND s.NUMTRANSVENDA = A.NUMTRANSVENDA AND A.CODOPER = 'S' AND A.CODFILIAL = s.CODFILIAL AND a.DTCANCEL IS NULL  ) AS codbrinde, "+
@@ -98,7 +122,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
      "  FROM PCPROFISSIONAL P "+
      "  where "+
      "  p.cnpj =?4 and "+
-     "  (UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') ", nativeQuery = true)
+     "  (UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') ", nativeQuery = true)
     Optional<pcprofissional> informacaofiltrocnpj(Long fatordivisao,String dtinico,String dtsaida,  String cnpj );
 
     @Transactional
@@ -150,7 +174,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
                   "p.dtnasc  " +
                   "FROM PCPROFISSIONAL P " +
                   "where " +
-                  "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') " +
+                  "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') " +
                   "AND P.SITUACAO = 'A' ORDER BY codbrinde DESC", nativeQuery = true)
     List<pcprofissional> SELECT(Long fatordivisao, String dtinico, String dtfim);
 
@@ -179,7 +203,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
      "  FROM PCPROFISSIONAL P "+
      "  where "+
      "  p.cnpj =?2 and "+
-     "  (UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%')  order by codbrinde DESC", nativeQuery = true)
+     "  (UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%')  order by codbrinde DESC", nativeQuery = true)
     List<pcprofissional> filtro(Long fatordivisao, String cnpj);
   @Query(value = "SELECT P.codprofissional,  "+
   "(select NVL(SUM((a.PUNIT * A.QT) / ?1),0) from pcmov a, pcnfsaid s WHERE extract (MONTH from dtsaida)=?2 and  A.DTMOV BETWEEN TO_DATE(?3, 'DD/MM/YYYY') AND TO_DATE(?4, 'DD/MM/YYYY')  AND A.CODPROD NOT IN (SELECT CODPROD FROM PCPRODUT WHERE CODSEC IN (587)) AND "+
@@ -206,7 +230,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
     "FROM PCPROFISSIONAL P "+ 
     "where "+
     "p.cnpj =?5 and "+
-    "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') "+
+    "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') "+
     "AND P.SITUACAO = 'A'", nativeQuery = true)
     Optional<pcprofissional> dashboard(Long fatordivisao,String mes, String dtinico, String dtfim, String cnpj );
 
@@ -235,7 +259,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
   "PCNFSAID D, PCPROFISSIONAL P "+
   "WHERE A.DTMOV BETWEEN TO_DATE(?2, 'DD/MM/YYYY') AND TO_DATE(?3, 'DD/MM/YYYY')  AND A.CODPROD NOT IN (SELECT CODPROD FROM PCPRODUT WHERE CODSEC IN (587)) AND "+
   "P.CODPROFISSIONAL = D.CODPROFISSIONAL AND D.NUMTRANSVENDA = A.NUMTRANSVENDA AND A.CODOPER = 'S' AND A.CODFILIAL = D.CODFILIAL AND D.DTCANCEL IS NULL  AND D.CODPROFISSIONAL IS NOT NULL AND "+
- "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') AND P.SITUACAO = 'A' " +
+ "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') AND P.SITUACAO = 'A' " +
  "GROUP BY P.codprofissional, p.descricao, p.senha, p.percomprof, p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  order by codbrinde DESC"+
                   " FETCH FIRST 10 ROWS ONLY", nativeQuery = true)
     List<pcprofissional> dashboardcoluna(Long fatordivisao, String dtinico, String dtfim);

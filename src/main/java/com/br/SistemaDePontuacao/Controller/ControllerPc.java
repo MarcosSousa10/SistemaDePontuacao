@@ -149,7 +149,18 @@ public class ControllerPc {
             return new pcprofissional();
         }
     }
-
+    //     @GetMapping("/validarcnpj/{cnpj}")
+    // public pcprofissional VALIDARCNPJ(@PathVariable String cnpj) {
+    //     Optional<Produto> fatordivisaos = parametros.select();
+    //     if (fatordivisaos.isPresent()) {
+    //         Produto produto = fatordivisaos.get();
+    //         Long fatordivisao = produto.getFatordivisao();
+    //         return profissional.validarcnpj(cnpj).orElse(new pcprofissional());
+    //     } else {
+    //         return new pcprofissional();
+    //     }
+    // }
+  
     @GetMapping("/informacaofitrocnpj/{cnpj}")
     public pcprofissional informacaofitrocnpj(@PathVariable String cnpj) {
         Optional<Produto> fatordivisaos = parametros.select();
@@ -218,6 +229,14 @@ public class ControllerPc {
             return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
         }
     }
+  @GetMapping("/validar/{cnpj}")
+public String VALIDARCNPJ(@PathVariable String cnpj) {        
+        if (profissional.validarcnpj(cnpj).isPresent()) {
+            return "Achei";
+        } else {
+            return null;
+        }
+}
 
     @PutMapping("/teste/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody ControllerPcFormRequests produto) {

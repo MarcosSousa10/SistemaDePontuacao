@@ -39,6 +39,9 @@ public class SecurityConfigurations {
                                                                 "/pc/teste/{id}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
+                                                                "/pc/validar/{cnpj}")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET,
                                                                 "/images/{id}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET,
@@ -61,9 +64,9 @@ public class SecurityConfigurations {
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET, "/pc/updatedtinicio/{dtinicio}")
                                                 .hasRole("ADMIN")
-                                                .requestMatchers(HttpMethod.PUT,"/pc/EditarCampanha/{id}")
+                                                .requestMatchers(HttpMethod.PUT, "/pc/EditarCampanha/{id}")
                                                 .hasRole("ADMIN")
-                                                .requestMatchers(HttpMethod.POST,"/pc/SalvarCampanha")
+                                                .requestMatchers(HttpMethod.POST, "/pc/SalvarCampanha")
                                                 .hasRole("ADMIN")
                                                 .requestMatchers(HttpMethod.GET, "/pc/update/{dtfim}").hasRole("ADMIN")
                                                 .requestMatchers(HttpMethod.GET, "/pc/select").hasRole("ADMIN")

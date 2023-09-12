@@ -19,7 +19,7 @@ public interface Repositorypcnfsaid extends JpaRepository<pcnfsaid, Long> {
          "and DTMOV between TO_DATE(?2, 'DD/MM/YYYY') and TO_DATE(?3, 'DD/MM/YYYY')),0) as pontuacao "+
             "FROM pcprofissional p "+
             "WHERE p.codprofissional= ?4 AND "+
-            "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESING%') "+
+            "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') "+
             "GROUP BY p.codprofissional", nativeQuery = true)
     pcnfsaid pontuacao(Long fatordivisao,String dtinicio,String dtfim,String cod );
 }
