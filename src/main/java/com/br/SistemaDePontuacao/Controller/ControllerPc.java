@@ -197,7 +197,21 @@ public class ControllerPc {
             return null;
         }
     }
+        @GetMapping("/clientespositivados/{cod}")
+    public Optional<pcnfsaid> clientespositivados(@PathVariable String cod) {
+        Optional<Produto> fatordivisaos = parametros.select();
+        if (fatordivisaos.isPresent()) {
+            Produto produto = fatordivisaos.get();
+            String dtinicio = produto.getDtinicio();
+            String dtfim = produto.getDtfim();
+            pcnfsaid result = pontuacao.clientespositivados(dtinicio, dtfim, cod);
 
+            return Optional.ofNullable(result != null ? result : new pcnfsaid());
+        } else {
+            return null;
+        }
+    }
+    
     @GetMapping("/informacao/{cod}")
     public Optional<pcprofissional> informaçoesprofissional(@PathVariable String cod) {
         Optional<Produto> fatordivisaos = parametros.select();

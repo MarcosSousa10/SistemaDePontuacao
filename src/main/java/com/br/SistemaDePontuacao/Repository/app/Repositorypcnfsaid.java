@@ -22,4 +22,8 @@ public interface Repositorypcnfsaid extends JpaRepository<pcnfsaid, Long> {
             "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') "+
             "GROUP BY p.codprofissional", nativeQuery = true)
     pcnfsaid pontuacao(Long fatordivisao,String dtinicio,String dtfim,String cod );
+    @Query(value = "select count(distinct(codcli)) as pontuacao, count(distinct(codcli)) as codprofissional from pcnfsaid "+
+    "where codprofissional = ?3 and "+
+    "dtsaida between  TO_DATE(?1, 'DD/MM/YYYY') and TO_DATE(?2, 'DD/MM/YYYY')", nativeQuery = true)
+    pcnfsaid clientespositivados(String dtinicio,String dtfim,String cod);
 }
