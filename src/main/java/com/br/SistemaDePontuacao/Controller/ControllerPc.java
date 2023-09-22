@@ -226,16 +226,16 @@ public class ControllerPc {
 
     @GetMapping("/Salvar/{senha}/{email}/{uf}/{dtnasc}/{rg_ie}/{fone}/{profissao}/{bairro}/{celular}/{cep}/{cidade}/{descricao}/"
             +
-            "{endereco}/{cnpj}")
+            "{endereco}/{cnpj}/{aceite_campanha}")
     public ResponseEntity<Object> Salvar(
             @PathVariable String senha, @PathVariable String email, @PathVariable String uf,
             @PathVariable String dtnasc, @PathVariable String rg_ie, @PathVariable String fone,
             @PathVariable String profissao, @PathVariable String bairro, @PathVariable String celular,
             @PathVariable String cep,
             @PathVariable String cidade, @PathVariable String descricao, @PathVariable String endereco,
-            @PathVariable String cnpj) {
+            @PathVariable String cnpj,@PathVariable Number aceite_campanha) {
         Object a = profissional.salvar(senha, email, uf, dtnasc, rg_ie, fone, profissao, bairro, celular, cep, cidade,
-                descricao, endereco, cnpj);
+                descricao, endereco, cnpj, aceite_campanha);
         if (a == "0") {
             return ResponseEntity.ok(a);
         } else {

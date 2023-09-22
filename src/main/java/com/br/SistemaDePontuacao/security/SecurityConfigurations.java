@@ -33,7 +33,7 @@ public class SecurityConfigurations {
                                                 .requestMatchers(HttpMethod.GET,
                                                                 "/pc/Salvar/{email}/{senha}/{celular}/{descricao}/{uf}/{dtnasc}/{rg_ie}/{fone}/{profissao}/"
                                                                                 +
-                                                                                "{bairro}/{cep}/{cidade}/{endereco}/{cnpj}")
+                                                                                "{bairro}/{cep}/{cidade}/{endereco}/{cnpj}/{aceite_campanha}")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.PUT,
                                                                 "/pc/teste/{id}")

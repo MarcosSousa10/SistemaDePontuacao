@@ -1,6 +1,5 @@
 package com.br.SistemaDePontuacao.Controller;
 
-import java.sql.Date;
 
 import com.br.SistemaDePontuacao.Model.app.pcprofissional;
 
