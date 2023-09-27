@@ -28,6 +28,7 @@ import com.br.SistemaDePontuacao.Model.app.vendasProfissional;
 import com.br.SistemaDePontuacao.Model.auth.Produto;
 import com.br.SistemaDePontuacao.Model.auth.campanha;
 import com.br.SistemaDePontuacao.Model.auth.video;
+import com.br.SistemaDePontuacao.Repository.app.RepositoryAceiteCampanha;
 import com.br.SistemaDePontuacao.Repository.app.RepositoryVendasProfissional;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcnfsaid;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcprofissional;
@@ -54,7 +55,8 @@ public class ControllerPc {
     private videoRepository vRepository;
     @Autowired
     private RepositoryCampanha campanha;
-
+    @Autowired
+    private RepositoryAceiteCampanha aceitarCampanha;
     // @GetMapping("/Campanha")
     // public List<campanha> CampanhaSelect() {
     //     return (List<campanha>) campanha.findAll();
@@ -243,6 +245,7 @@ public class ControllerPc {
             return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
         }
     }
+
   @GetMapping("/validar/{cnpj}")
 public String VALIDARCNPJ(@PathVariable String cnpj) {        
         if (profissional.validarcnpj(cnpj).isPresent()) {
@@ -252,6 +255,15 @@ public String VALIDARCNPJ(@PathVariable String cnpj) {
         }
 }
 
+  @GetMapping("/aceitarCampanha/{cod}")
+public String  ACEITARCAMPANHA (@PathVariable String cod) {  
+          
+        if (aceitarCampanha.aceitarCampanha(cod).isPresent()) {
+            return "Achei";
+        } else {
+            return null;
+        }
+}
     @PutMapping("/teste/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable Integer id, @RequestBody ControllerPcFormRequests produto) {
         Optional<pcprofissionals> produtoExistente = profissionals.findById(id);
@@ -282,7 +294,18 @@ public String VALIDARCNPJ(@PathVariable String cnpj) {
             return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
         }
     }
-
+    
+    @GetMapping("/updateTermos/{codprofissional}")
+    public ResponseEntity<Object> UpdateTermos(@PathVariable String codprofissional) {
+        Object a = aceitarCampanha.UpdataTermos(codprofissional);
+        System.out.println(a);
+        if (a == "0") {
+            return ResponseEntity.ok(a);
+        } else {
+            String errorMessage = "Aceito";
+            return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
+        }
+    }
     @GetMapping("/updatefatordivisao/{fatordivisao}")
     public String Editarfatordivisao(
             @PathVariable String fatordivisao) {
