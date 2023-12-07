@@ -193,7 +193,7 @@ public interface Repositorypcprofissional extends JpaRepository<pcprofissional, 
     "p.codprofissional = c.codprofissional and "+
     "(UPPER(P.PROFISSAO) LIKE 'DECORADOR%' OR UPPER(P.PROFISSAO) LIKE 'ARQUITET%' OR UPPER(P.PROFISSAO) LIKE 'DESIG%') AND "+
      "a.dtmov BETWEEN TO_DATE(?2, 'DD/MM/YYYY') AND TO_DATE(?3, 'DD/MM/YYYY') "+
-    "and c.dtfat > TO_DATE(?2, 'DD/MM/YYYY') "+
+    "and c.dtfat >= TO_DATE(?2, 'DD/MM/YYYY') "+
     "AND P.SITUACAO = 'A' GROUP BY P.codprofissional, p.descricao, p.senha, p.percomprof, "+
      "p.tiposorteio, p.tipoprof, p.dtcadastro, p.codfunccad, p.profissao, p.cnpj, p.rg_ie, "+
       "p.endereco, p.bairro, p.cep, p.fone, p.email, p.cidade, p.uf, p.celular, p.dtnasc  "+
