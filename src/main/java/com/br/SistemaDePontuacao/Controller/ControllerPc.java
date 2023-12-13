@@ -27,6 +27,8 @@ import com.br.SistemaDePontuacao.Model.app.pcprofissionals;
 import com.br.SistemaDePontuacao.Model.app.vendasProfissional;
 import com.br.SistemaDePontuacao.Model.auth.Produto;
 import com.br.SistemaDePontuacao.Model.auth.campanha;
+import com.br.SistemaDePontuacao.Model.auth.saibamais;
+import com.br.SistemaDePontuacao.Model.auth.sobre;
 import com.br.SistemaDePontuacao.Model.auth.video;
 import com.br.SistemaDePontuacao.Repository.app.RepositoryAceiteCampanha;
 import com.br.SistemaDePontuacao.Repository.app.RepositoryVendasProfissional;
@@ -34,6 +36,8 @@ import com.br.SistemaDePontuacao.Repository.app.Repositorypcnfsaid;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcprofissional;
 import com.br.SistemaDePontuacao.Repository.app.Repositorypcprofissionals;
 import com.br.SistemaDePontuacao.Repository.auth.RepositoryCampanha;
+import com.br.SistemaDePontuacao.Repository.auth.RepositoryoSaibamais;
+import com.br.SistemaDePontuacao.Repository.auth.RepositoryoSobre;
 import com.br.SistemaDePontuacao.Repository.auth.Repositoryoo;
 import com.br.SistemaDePontuacao.Repository.auth.videoRepository;
 
@@ -57,11 +61,91 @@ public class ControllerPc {
     private RepositoryCampanha campanha;
     @Autowired
     private RepositoryAceiteCampanha aceitarCampanha;
+    @Autowired
+    private RepositoryoSobre sobre;
+    @Autowired
+    private RepositoryoSaibamais mais;
     // @GetMapping("/Campanha")
     // public List<campanha> CampanhaSelect() {
     //     return (List<campanha>) campanha.findAll();
     // }
+        @PostMapping("/SalvarSaibamais")
+    public ControllerSaibamais salvarSaibamais(@RequestBody ControllerSaibamais saiba) {
+        saibamais entidade = saiba.toModel();
+        mais.save(entidade);
+        return ControllerSaibamais.fromModel(entidade);
+    }   
+     @PutMapping("/EditarSaibamais/{id}")
+    public ControllerSaibamais editarSaibamais(@PathVariable Integer id, @RequestBody ControllerSaibamais saibaAtualizada) {
+        // Primeiro, verifique se a campanha com o ID fornecido existe no banco de dados
+        Optional<saibamais> saibaExistente = mais.findById(id);
+        
+        if (saibaExistente.isPresent()) {
+            // Atualize os dados da campanha existente com os dados da campanha atualizada
+            saibamais entidadeExistente = saibaExistente.get();
+            entidadeExistente.setTexto(saibaAtualizada.getTexto());
 
+            // Atualize os outros atributos conforme necessário
+            
+            // Salve a campanha atualizada de volta no banco de dados
+            mais.save(entidadeExistente);
+            
+            return ControllerSaibamais.fromModel(entidadeExistente);
+        } else {
+            // Caso a campanha com o ID fornecido não exista, você pode lidar com isso adequadamente
+            throw null;
+        }
+    }
+
+    @GetMapping("/Saibamais")
+    public ResponseEntity<saibamais> SaibamaisSelects() {
+        Optional<saibamais> saibaOptional = mais.findById(1); 
+        
+        if (saibaOptional.isPresent()) {
+            return ResponseEntity.ok(saibaOptional.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping("/SalvarSobre")
+    public ControllerSobre salvarSobre(@RequestBody ControllerSobre Psobre) {
+        sobre entidade = Psobre.toModel();
+        sobre.save(entidade);
+        return ControllerSobre.fromModel(entidade);
+    }   
+     @PutMapping("/EditarSobre/{id}")
+    public ControllerSobre editarSobre(@PathVariable Integer id, @RequestBody ControllerSobre sobreAtualizada) {
+        // Primeiro, verifique se a campanha com o ID fornecido existe no banco de dados
+        Optional<sobre> sobreExistente = sobre.findById(id);
+        
+        if (sobreExistente.isPresent()) {
+            // Atualize os dados da campanha existente com os dados da campanha atualizada
+            sobre entidadeExistente = sobreExistente.get();
+            entidadeExistente.setTexto(sobreAtualizada.getTexto());
+
+            // Atualize os outros atributos conforme necessário
+            
+            // Salve a campanha atualizada de volta no banco de dados
+            sobre.save(entidadeExistente);
+            
+            return ControllerSobre.fromModel(entidadeExistente);
+        } else {
+            // Caso a campanha com o ID fornecido não exista, você pode lidar com isso adequadamente
+            throw null;
+        }
+    }
+
+    @GetMapping("/Sobre")
+    public ResponseEntity<sobre> SobreSelects() {
+        Optional<sobre> sobreOptional = sobre.findById(1); 
+        
+        if (sobreOptional.isPresent()) {
+            return ResponseEntity.ok(sobreOptional.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
     @PostMapping("/SalvarCampanha")
     public ControllerCampanha salvarCampanha(@RequestBody ControllerCampanha loginss) {
         campanha entidade = loginss.toModel();
