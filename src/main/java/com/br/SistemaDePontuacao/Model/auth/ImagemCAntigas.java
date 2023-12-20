@@ -11,12 +11,11 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "imagemc")
-public class ImagemC {
+@Table(name = "imagemcantigas")
+public class ImagemCAntigas {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String descricao;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
@@ -26,12 +25,7 @@ public class ImagemC {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getDescricao() {
-        return descricao;
-    }
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
+
     public byte[] getData() {
         return data;
     }
@@ -40,22 +34,20 @@ public class ImagemC {
     }
     @Override
     public String toString() {
-        return "ImagemC [id=" + id + ", descricao=" + descricao + ", data=" + Arrays.toString(data) + "]";
+        return "ImagemC [id=" + id + ", data=" + Arrays.toString(data) + "]";
     }
-    public ImagemC(Long id, String descricao, byte[] data) {
+    public ImagemCAntigas(Long id, byte[] data) {
         this.id = id;
-        this.descricao = descricao;
         this.data = data;
     }
-    public ImagemC() {
+    public ImagemCAntigas() {
     }
 
 
     // CREATE TABLE `imagemcantigas` (
-    //     `id` bigint NOT NULL AUTO_INCREMENT primary key,
-    //     `data` longblob,
-    //     `descricao` varchar(255)
-    //   );
+    //     `id` bigint(20) NOT NULL PRIMARY KEY ,
+    //     `data` longblob DEFAULT NULL
+    //   )
  
 
 }
