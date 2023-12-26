@@ -48,7 +48,6 @@ public class ImagemCarrossel {
         ImagemC image = imageService.getImageById(id);
         byte[] imageData = image.getData();
         String descricao = image.getDescricao();
-        System.out.println(descricao+"dasd");
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG) 
                 .body(imageData);

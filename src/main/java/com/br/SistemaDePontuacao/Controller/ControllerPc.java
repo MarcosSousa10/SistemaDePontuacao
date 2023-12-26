@@ -275,7 +275,6 @@ public class ControllerPc {
             Long fatordivisao = produto.getFatordivisao();
             String dtinicio = produto.getDtinicio();
             String dtfim = produto.getDtfim();
-            System.out.println(dtfim + dtinicio + fatordivisao);
             pcnfsaid result = pontuacao.pontuacao(fatordivisao, dtinicio, dtfim, cod);
 
             return Optional.ofNullable(result != null ? result : new pcnfsaid());
@@ -382,7 +381,6 @@ public String  ACEITARCAMPANHA (@PathVariable String cod) {
     @GetMapping("/updateTermos/{codprofissional}")
     public ResponseEntity<Object> UpdateTermos(@PathVariable String codprofissional) {
         Object a = aceitarCampanha.UpdataTermos(codprofissional);
-        System.out.println(a);
         if (a == "0") {
             return ResponseEntity.ok(a);
         } else {

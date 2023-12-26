@@ -47,7 +47,6 @@ public class AuthenticationController {
 
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-                    System.out.println(auth);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
